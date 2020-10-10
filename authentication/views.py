@@ -11,7 +11,6 @@ from .permissions import UserPermissions
 
 class ManageUsers(viewsets.ModelViewSet):
     """Manage users create, list, delete, update"""
-    authentication_classes = [TokenAuthentication,]
     serializer_class = UserSerializer
     permission_classes = [UserPermissions, ]
     queryset = User.objects.all()
