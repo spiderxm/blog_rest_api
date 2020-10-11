@@ -19,7 +19,8 @@ class Comments(models.Model):
     """Comments model to add comments"""
     blog = models.ForeignKey('Blog', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=256, null=False)
+    comment = models.CharField(max_length=256, null=False, validators=[MinLengthValidator(1, "Comment should have "
+                                                                                             "minimum length 1.")])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
