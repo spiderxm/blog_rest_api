@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
 from authentication.models import User
 
@@ -31,7 +32,7 @@ class ImageUrls(models.Model):
 
 class Tags(models.Model):
     """Tags model"""
-    tag = models.CharField(max_length=256)
+    tag = models.CharField(max_length=256, validators=[MinLengthValidator(3,"Length of tag cannot be less than 3")], unique=True)
 
     def __str__(self):
         self.tag

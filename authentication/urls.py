@@ -4,5 +4,7 @@ from .views import ManageUsers, Login
 
 router = DefaultRouter()
 router.register('user', ManageUsers)
-urlpatterns = [path('', include(router.urls)),
-               path('login/', Login.as_view())]
+urlpatterns = [
+    path('', include(router.urls)),
+    path('login/', Login.as_view()),
+]
