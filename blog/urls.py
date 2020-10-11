@@ -11,13 +11,16 @@ from .views import (
     CreateBlogTags,
     BlogTagsList,
     ExternalLinksList,
-    ExternalLink
+    ExternalLink,
+    ImageUrlsList,
+ImageUrl
 )
 
 router = DefaultRouter()
 router.register('blog', Blogs)
 router.register('externallink', ExternalLink)
 router.register('comments', Comment)
+router.register('imageurls', ImageUrl)
 urlpatterns = [
     path('createtag/', CreateTag.as_view()),
     path('tags/', ListTags.as_view()),
@@ -27,4 +30,5 @@ urlpatterns = [
     path('blogtags/', BlogTagsList.as_view()),
     path('createblogtags/', CreateBlogTags.as_view()),
     path('externallinkslist/', ExternalLinksList.as_view()),
+    path('imageurlslist/', ImageUrlsList.as_view())
 ]

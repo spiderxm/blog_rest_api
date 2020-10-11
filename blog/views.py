@@ -2,10 +2,10 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
-
+from rest_framework.response import Response
 from authentication.permissions import UserPermissionsForBlog, UserPermissionsForComments
 from .serializers import TagSerializer, BlogSerializer, CommentSerializer, BlogTagsSerialzer, BlogTagsSerialzerForList, \
-    CommentSerializerForList, ExternalLinkSerializer
+    CommentSerializerForList, ExternalLinkSerializer, ImageUrlSerializer
 from .models import Blog, ImageUrls, ExternalLinks, Comments, Tags, BlogTags
 
 
@@ -76,7 +76,7 @@ class CreateBlogTags(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
 
 class ExternalLinksList(generics.ListAPIView):
-    """List all the the external links for a blog post"""
+    """List all the the external links"""
     serializer_class = ExternalLinkSerializer
     queryset = ExternalLinks.objects.all()
 
@@ -87,3 +87,20 @@ class ExternalLink(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = ExternalLinks.objects.all()
     authentication_classes = [TokenAuthentication, ]
+
+
+class ImageUrlsList(generics.ListAPIView):
+    """List all the the Image urls"""
+    serializer_class = ImageUrlSerializer
+    queryset = ImageUrls.objects.all()
+
+
+class ImageUrl(ModelViewSet):
+    """Attach external links with blogs"""
+    serializer_class = ImageUrlSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = ImageUrls.objects.all()
+    authentication_classes = [TokenAuthentication, ]
+
+
+
