@@ -4,7 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
 
 from authentication.permissions import UserPermissionsForBlog, UserPermissionsForComments
-from .serializers import TagSerializer, BlogSerializer, CommentSerializer, BlogTagsSerialzer, BlogTagsSerialzerForList
+from .serializers import TagSerializer, BlogSerializer, CommentSerializer, BlogTagsSerialzer, BlogTagsSerialzerForList, \
+    CommentSerializerForList, ExternalLinkSerializer
 from .models import Blog, ImageUrls, ExternalLinks, Comments, Tags, BlogTags
 
 
@@ -46,7 +47,7 @@ class Blogs(ModelViewSet):
 
 class CommentsList(generics.ListAPIView):
     """List all the comments """
-    serializer_class = CommentSerializer
+    serializer_class = CommentSerializerForList
     queryset = Comments.objects.all()
 
 
@@ -72,4 +73,17 @@ class CreateBlogTags(generics.CreateAPIView):
     serializer_class = BlogTagsSerialzer
     permission_classes = [IsAuthenticated]
     queryset = BlogTags.objects.all()
+    authentication_classes = [TokenAuthentication, ]
+
+class ExternalLinksList(generics.ListAPIView):
+    """List all the the external links for a blog post"""
+    serializer_class = ExternalLinkSerializer
+    queryset = ExternalLinks.objects.all()
+
+
+class ExternalLink(ModelViewSet):
+    """Attach external links with blogs"""
+    serializer_class = ExternalLinkSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = ExternalLinks.objects.all()
     authentication_classes = [TokenAuthentication, ]

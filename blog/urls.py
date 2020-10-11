@@ -9,11 +9,14 @@ from .views import (
     Comment,
     CommentsList,
     CreateBlogTags,
-    BlogTagsList
+    BlogTagsList,
+    ExternalLinksList,
+    ExternalLink
 )
 
 router = DefaultRouter()
 router.register('blog', Blogs)
+router.register('externallink', ExternalLink)
 router.register('comments', Comment)
 urlpatterns = [
     path('createtag/', CreateTag.as_view()),
@@ -22,5 +25,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('commentslist/', CommentsList.as_view()),
     path('blogtags/', BlogTagsList.as_view()),
-    path('createblogtags/', CreateBlogTags.as_view())
+    path('createblogtags/', CreateBlogTags.as_view()),
+    path('externallinkslist/', ExternalLinksList.as_view()),
 ]

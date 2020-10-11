@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Tags, Blog, Comments, BlogTags
+from .models import Tags, Blog, Comments, BlogTags, ExternalLinks
+from authentication.serializers import UserSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -92,6 +93,47 @@ class BlogTagsSerialzerForList(serializers.ModelSerializer):
     class Meta:
         model = BlogTags
         fields = ['id', 'tag', 'blog']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            }
+        }
+
+
+class CommentSerializerForList(serializers.ModelSerializer):
+    """
+    Serializer fpr comments
+    """
+    user = UserSerializer()
+
+    class Meta:
+        model = Comments
+        fields = ['id', 'blog', 'user', 'comment', 'created_at', 'updated_at']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            },
+            'user': {
+                'read_only': True
+            },
+            'created_at': {
+                'read_only': True
+            },
+            'updated_at': {
+                'read_only': True
+            }
+
+        }
+
+
+class ExternalLinkSerializer(serializers.ModelSerializer):
+    """
+    Serializer for external links for a blog
+    """
+
+    class Meta:
+        model = ExternalLinks
+        fields = ['id', 'blog', 'link', 'data']
         extra_kwargs = {
             'id': {
                 'read_only': True
