@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
 
 from authentication.permissions import UserPermissionsForBlog, UserPermissionsForComments
-from .serializers import TagSerializer, BlogSerializer, CommentSerializer
+from .serializers import TagSerializer, BlogSerializer, CommentSerializer, BlogTagsSerialzer, BlogTagsSerialzerForList
 from .models import Blog, ImageUrls, ExternalLinks, Comments, Tags, BlogTags
 
 
@@ -59,3 +59,17 @@ class Comment(ModelViewSet):
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+
+
+class BlogTagsList(generics.ListAPIView):
+    """List all the the tags for various blogs"""
+    serializer_class = BlogTagsSerialzerForList
+    queryset = BlogTags.objects.all()
+
+
+class CreateBlogTags(generics.CreateAPIView):
+    """Attach tags with blogs"""
+    serializer_class = BlogTagsSerialzer
+    permission_classes = [IsAuthenticated]
+    queryset = BlogTags.objects.all()
+    authentication_classes = [TokenAuthentication, ]

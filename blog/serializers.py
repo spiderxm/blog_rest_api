@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tags, Blog, Comments
+from .models import Tags, Blog, Comments, BlogTags
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -15,10 +15,28 @@ class TagSerializer(serializers.ModelSerializer):
                 'read_only': True
             }
         }
+
+
+class BlogTagsSerialzer(serializers.ModelSerializer):
+    """
+    Serializer for Blog Tags
+    """
+
+    class Meta:
+        model = BlogTags
+        fields = ['id', 'tag', 'blog']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            }
+        }
+
+
 class CommentSerializer(serializers.ModelSerializer):
     """
     Serializer fpr comments
     """
+
     class Meta:
         model = Comments
         fields = ['id', 'blog', 'user', 'comment', 'created_at', 'updated_at']
@@ -61,4 +79,21 @@ class BlogSerializer(serializers.ModelSerializer):
                 'read_only': True
             }
 
+        }
+
+
+class BlogTagsSerialzerForList(serializers.ModelSerializer):
+    """
+    Serializer for Blog Tags
+    """
+    tag = TagSerializer()
+    blog = BlogSerializer()
+
+    class Meta:
+        model = BlogTags
+        fields = ['id', 'tag', 'blog']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            }
         }

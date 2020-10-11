@@ -36,13 +36,19 @@ class Tags(models.Model):
     tag = models.CharField(max_length=256, validators=[MinLengthValidator(3,"Length of tag cannot be less than 3")], unique=True)
 
     def __str__(self):
-        self.tag
+        return self.tag
 
 
 class BlogTags(models.Model):
     """Attach tags to blogs"""
     tag = models.ForeignKey(Tags, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('tag', 'blog')
+
+    def __str__(self):
+        return self.tag.tag + self.blog.title
 
 class ExternalLinks(models.Model):
     """Attach external links to blog"""

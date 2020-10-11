@@ -7,7 +7,9 @@ from .views import (
     ListBlogs,
     Blogs,
     Comment,
-    CommentsList
+    CommentsList,
+    CreateBlogTags,
+    BlogTagsList
 )
 
 router = DefaultRouter()
@@ -18,5 +20,7 @@ urlpatterns = [
     path('tags/', ListTags.as_view()),
     path('blogs/', ListBlogs.as_view()),
     path('', include(router.urls)),
-    path('commentslist/', CommentsList.as_view())
+    path('commentslist/', CommentsList.as_view()),
+    path('blogtags/', BlogTagsList.as_view()),
+    path('createblogtags/', CreateBlogTags.as_view())
 ]
