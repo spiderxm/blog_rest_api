@@ -1,4 +1,4 @@
-# Blog Rest Application - Made with Django Rest Framework
+# Blog Rest API - Made with Django Rest Framework
 ## Various Features
 ### Users (CRUD functionality)
 ### Blogs (CRUD functionality)
