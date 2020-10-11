@@ -55,3 +55,11 @@ class ExternalLinks(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     link = models.URLField(max_length=256, null=False)
     data = models.CharField(max_length=256, null=False)
+
+class LikeBlog(models.Model):
+    """Like on a blog"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'blog')

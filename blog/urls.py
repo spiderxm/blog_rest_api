@@ -13,7 +13,9 @@ from .views import (
     ExternalLinksList,
     ExternalLink,
     ImageUrlsList,
-ImageUrl
+    LikeBlogPost,
+    ImageUrl,
+    LikesList
 )
 
 router = DefaultRouter()
@@ -30,5 +32,7 @@ urlpatterns = [
     path('blogtags/', BlogTagsList.as_view()),
     path('createblogtags/', CreateBlogTags.as_view()),
     path('externallinkslist/', ExternalLinksList.as_view()),
-    path('imageurlslist/', ImageUrlsList.as_view())
+    path('imageurlslist/', ImageUrlsList.as_view()),
+    path('like/<_id>', LikeBlogPost.as_view()),
+    path('likes/', LikesList.as_view())
 ]

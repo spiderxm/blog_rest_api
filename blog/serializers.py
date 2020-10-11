@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tags, Blog, Comments, BlogTags, ExternalLinks, ImageUrls
+from .models import Tags, Blog, Comments, BlogTags, ExternalLinks, ImageUrls, LikeBlog
 from authentication.serializers import UserSerializer
 
 
@@ -148,6 +148,20 @@ class ImageUrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageUrls
         fields = ['id','blog', 'url']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            }
+        }
+
+class LikeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Likes on a Blog Post
+    """
+    user = UserSerializer()
+    class Meta:
+        model = LikeBlog
+        fields = ['id', 'blog', 'user']
         extra_kwargs = {
             'id': {
                 'read_only': True

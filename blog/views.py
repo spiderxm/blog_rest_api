@@ -1,12 +1,14 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
-from rest_framework.response import Response
+from rest_framework import status
 from authentication.permissions import UserPermissionsForBlog, UserPermissionsForComments
 from .serializers import TagSerializer, BlogSerializer, CommentSerializer, BlogTagsSerialzer, BlogTagsSerialzerForList, \
-    CommentSerializerForList, ExternalLinkSerializer, ImageUrlSerializer
-from .models import Blog, ImageUrls, ExternalLinks, Comments, Tags, BlogTags
+    CommentSerializerForList, ExternalLinkSerializer, ImageUrlSerializer, LikeSerializer
+from .models import Blog, ImageUrls, ExternalLinks, Comments, Tags, BlogTags, LikeBlog
 
 
 class CreateTag(generics.CreateAPIView):
@@ -75,6 +77,7 @@ class CreateBlogTags(generics.CreateAPIView):
     queryset = BlogTags.objects.all()
     authentication_classes = [TokenAuthentication, ]
 
+
 class ExternalLinksList(generics.ListAPIView):
     """List all the the external links"""
     serializer_class = ExternalLinkSerializer
@@ -103,4 +106,30 @@ class ImageUrl(ModelViewSet):
     authentication_classes = [TokenAuthentication, ]
 
 
+class LikeBlogPost(APIView):
+    """Create and delete Likes"""
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, _id):
+        like = LikeBlog.objects.all().filter(blog_id=_id, user_id=self.request.user.id)
+        if len(like) == 0:
+            like = LikeBlog.objects.create(blog_id=_id, user_id=self.request.user.id)
+            like.save()
+            return Response({"message": "Like Created Successfully"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "Like is Already Created"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, _id):
+        like = LikeBlog.objects.all().filter(blog_id=_id, user_id=self.request.user.id)
+        if len(like) != 0:
+            like = like[0]
+            like.delete()
+            return Response({"message": "Like Deleted"}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response({"error": "Like is Already Deleted"}, status=status.HTTP_400_BAD_REQUEST)
+
+class LikesList(generics.ListAPIView):
+    """List all the the Likes"""
+    serializer_class = LikeSerializer
+    queryset = LikeBlog.objects.all()
